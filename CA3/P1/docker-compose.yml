@@ -1,0 +1,70 @@
+version: '3.9'
+
+services:
+
+  reverse-proxy:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/htpasswd:/etc/nginx/.htpasswd
+    networks:
+      - ${PUBLIC_NETWORK}
+
+  bibi-tavallod:
+    build:
+      context: ./BIBI Tavallod
+    networks:
+      - ${PUBLIC_NETWORK}
+
+  bazi-2048:
+    build:
+      context: ./Bazi 2048
+    networks:
+      - ${PUBLIC_NETWORK}
+
+  vote-app:
+    build:
+      context: ./voting app/vote
+    networks:
+      - ${PUBLIC_NETWORK}
+      - ${INTERNAL_NETWORK}
+    depends_on:
+      - redis
+
+  result-app:
+    build:
+      context: ./voting app/result
+    networks:
+      - ${PUBLIC_NETWORK}
+      - ${INTERNAL_NETWORK}
+    depends_on:
+      - db
+
+  worker:
+    build:
+      context: ./voting app/worker
+    networks:
+      - ${INTERNAL_NETWORK}
+    depends_on:
+      - redis
+      - db
+
+  redis:
+    image: redis:alpine
+    networks:
+      - ${INTERNAL_NETWORK}
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: example
+    networks:
+      - ${INTERNAL_NETWORK}
+
+networks:
+  ${PUBLIC_NETWORK}:
+  ${INTERNAL_NETWORK}:
+    internal: true
