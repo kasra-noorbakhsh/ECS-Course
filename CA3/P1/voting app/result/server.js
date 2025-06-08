@@ -6,7 +6,7 @@ var express = require('express'),
     server = require('http').Server(app),
     io = require('socket.io')(server);
 
-var port = process.env.PORT || 4000;
+var port = process.env.PORT || 5001;
 
 io.on('connection', function (socket) {
 

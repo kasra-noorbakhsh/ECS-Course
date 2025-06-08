@@ -34,7 +34,6 @@ services:
     networks:
       - backend
 
-  # Vote Service
   vote:
     build:
       context: ./voting app/vote
@@ -42,18 +41,19 @@ services:
         OPTION_A: ${OPTION_A}
         OPTION_B: ${OPTION_B}
     container_name: vote
-    ports:
+    expose:
       - "5000"
     depends_on:
       - redis
     networks:
       - backend
 
-  # Result Service
   result:
     build: ./voting app/result
     container_name: result
-    ports:
+    environment:
+      - PORT=5001
+    expose:
       - "5001"
     depends_on:
       - postgres
