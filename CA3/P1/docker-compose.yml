@@ -6,7 +6,6 @@ networks:
 
 services:
 
-  # Redis for vote app
   redis:
     image: redis:alpine
     container_name: redis
@@ -60,21 +59,18 @@ services:
     networks:
       - backend
 
-  # 2048 Game Service
   boy:
     build: ./Bazi 2048
     container_name: 2048-game
     networks:
       - backend
 
-  # Go Happy Birthday Page
   girl:
     build: ./BIBI Tavallod
     container_name: happy-birthday
     networks:
       - backend
 
-  # NGINX Reverse Proxy
   nginx:
     image: nginx:alpine
     container_name: reverse-proxy
