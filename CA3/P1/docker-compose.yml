@@ -78,7 +78,7 @@ services:
       - "80:80"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx-auth/.htpasswd:/etc/nginx/.htpasswd
+      - ./nginx_auth/.htpasswd.txt:/etc/nginx/.htpasswd
     depends_on:
       - vote
       - result
