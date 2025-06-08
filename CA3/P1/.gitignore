@@ -1,2 +1,2 @@
 .env
-nginx/htpasswd
+nginx_auth/
